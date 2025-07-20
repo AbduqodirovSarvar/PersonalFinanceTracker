@@ -11,7 +11,7 @@ namespace Domain.Entities
     public record Transaction : FullEntity
     {
         public decimal Amount { get; set; }
-        public TransactionType Type { get; set; } = TransactionType.Expense;
+        public TransactionType Type { get; set; } = TransactionType.None;
         public Guid CategoryId { get; set; }
         public Category? Category { get; set; }
 

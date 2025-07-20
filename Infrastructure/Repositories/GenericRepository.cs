@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Enums
+namespace Infrastructure.Repositories
 {
-    public enum TransactionType
+    public class GenericRepository
     {
-        None = 0,
-        Income = 1,
-        Expense = 2
     }
 }

@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Enums
+namespace Application.Interfaces
 {
-    public enum TransactionType
+    public interface IMessageProducer
     {
-        None = 0,
-        Income = 1,
-        Expense = 2
     }
 }
