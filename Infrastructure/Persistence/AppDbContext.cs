@@ -15,10 +15,10 @@ namespace Infrastructure.Persistence
     {
         private readonly AuditableEntitySaveChangesInterceptor _auditableInterceptor = auditableInterceptor;
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
-        public DbSet<AuditLog> AuditLogs { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
+        public virtual DbSet<AuditLog> AuditLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
