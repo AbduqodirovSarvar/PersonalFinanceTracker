@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public record AuditLog : BaseEntity
+    public record AuditLog : AudiTableEntity
     {
         public Guid UserId { get; set; }
         public User? User { get; set; }

@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 namespace Application.Features.Categories.Commands.Create
 {
     public class CreateCategoryCommandHandler(
-        ICategoryRepositoy repository,
+        ICategoryRepositoy categoryRepository,
         IMapper mapper,
         ICurrentUserService currentUserService,
         IUserRepositoy userRepositoy)
         : IRequestHandler<CreateCategoryCommand, Result<CategoryViewModel>>
     {
-        private readonly ICategoryRepositoy _categoryRepository = repository;
+        private readonly ICategoryRepositoy _categoryRepository = categoryRepository;
         private readonly IMapper _mapper = mapper;
         private readonly ICurrentUserService _currentUserService = currentUserService;
         private readonly IUserRepositoy _userRepository = userRepositoy;
@@ -30,7 +30,11 @@ namespace Application.Features.Categories.Commands.Create
             if(currentUser == null)
                 return Result<CategoryViewModel>.Fail("You are not authorized to create this category.");
 
-            var category = new Category
+            var category = await _categoryRepository.GetAsync(x => x.UserId == currentUser.Id && x.Name == request.Name);
+            if (category != null)
+                return Result<CategoryViewModel>.Fail("Category already exists");
+
+            category = new Category
             {
                 Name = request.Name,
                 Color = request.Color,

@@ -7,19 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Logging\" />
-    <Folder Include="MessageBroker\Consumer\" />
-    <Folder Include="MessageBroker\Config\" />
-    <Folder Include="MessageBroker\Producer\" />
     <Folder Include="Redis\" />
-    <Folder Include="Persistence\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.2" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.1" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.47" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.1" />
   </ItemGroup>

@@ -21,7 +21,6 @@ namespace Application.Features.Users.Queries.GetList
         public async Task<PaginatedResult<UserViewModel>> Handle(GetUserListQuery request, CancellationToken cancellationToken)
         {
             Expression<Func<User, bool>> predicate = u =>
-                !u.IsDeleted &&
                 (string.IsNullOrEmpty(request.SearchTerm) ||
                  u.UserName.Contains(request.SearchTerm) ||
                  u.Email.Contains(request.SearchTerm));

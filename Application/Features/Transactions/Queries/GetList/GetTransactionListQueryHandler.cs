@@ -21,7 +21,6 @@ namespace Application.Features.Transactions.Queries.GetList
         public async Task<PaginatedResult<TransactionViewModel>> Handle(GetTransactionListQuery request, CancellationToken cancellationToken)
         {
             Expression<Func<Transaction, bool>> predicate = t =>
-                !t.IsDeleted &&
                 (string.IsNullOrEmpty(request.SearchTerm) || (t.Note != null && t.Note.ToLower().Contains(request.SearchTerm.ToLower()))) &&
                 (!request.FromDate.HasValue || t.CreatedAt >= request.FromDate.Value) &&
                 (!request.ToDate.HasValue || t.CreatedAt <= request.ToDate.Value) &&

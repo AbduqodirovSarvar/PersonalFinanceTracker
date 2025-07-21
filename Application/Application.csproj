@@ -11,6 +11,7 @@
     <Folder Include="Common\Exceptions\" />
     <Folder Include="DependencyInjection\" />
     <Folder Include="Features\Transactions\Validators\" />
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>

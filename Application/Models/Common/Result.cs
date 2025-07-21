@@ -11,6 +11,11 @@ namespace Application.Models.Common
         public bool Success { get; set; }
         public string? Message { get; set; }
         public TEntityViewModel? Data { get; set; }
+        public string? AccessToken { get; set; }
+
+        public static Result<TEntityViewModel> LoginSuccess(TEntityViewModel data, string accessToken) => new() { Success = true, Data = data, AccessToken = accessToken };
+
+        public static Result<TEntityViewModel> LoginFail(string message) => new() { Success = false, Message = message };
 
         public static Result<TEntityViewModel> Ok() => new() { Success = true, Message = "Success" };
 

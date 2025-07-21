@@ -1,15 +1,13 @@
 ﻿using Application.Interfaces;
 using Infrastructure.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using StackExchange.Redis;
+using Infrastructure.Repositories;
+using Infrastructure.Persistence.Interceptors;
+using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DependencyInjection
 {
@@ -20,11 +18,28 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IHashService, HashService>();
+            services.AddScoped<IRedisCacheService, RedisCacheService>();
+
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IUserRepositoy, UserRepository>();
+            services.AddScoped<ICategoryRepositoy, CategoryRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+
+            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+
+            services.AddDbContext<AppDbContext>((serviceProvider, options) =>
+            {
+                var interceptor = serviceProvider.GetRequiredService<AuditableEntitySaveChangesInterceptor>();
+                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+                options.AddInterceptors(interceptor);
+            });
+
 
             var redisConnection = configuration.GetConnectionString("Redis");
             services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnection!));
-            services.AddScoped<IRedisCacheService, RedisCacheService>();
-
 
             return services;
         }
