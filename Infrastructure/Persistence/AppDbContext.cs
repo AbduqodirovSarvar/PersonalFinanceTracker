@@ -1,7 +1,11 @@
 ﻿using Application.Interfaces;
+using Domain.Entities;
+using Infrastructure.Identity;
 using Infrastructure.Persistence.Configuration;
+using Infrastructure.Persistence.DefaultData;
 using Infrastructure.Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +22,11 @@ namespace Infrastructure.Persistence
     {
         private readonly AuditableEntitySaveChangesInterceptor _auditableInterceptor = auditableInterceptor;
 
+        public DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -31,5 +40,23 @@ namespace Infrastructure.Persistence
             optionsBuilder.EnableSensitiveDataLogging();
             optionsBuilder.AddInterceptors(_auditableInterceptor);
         }
+
+        public async Task SeedAsync(IHashService hashService)
+        {
+            if (!Users.Any())
+            {
+                var users = DefaultUserData.Users(hashService);
+                foreach (var user in users)
+                {
+                    if(!Users.Any(x => x.UserName == user.UserName || x.Email == user.Email))
+                    {
+                        Users.Add(user);
+                    }
+                }
+                await SaveChangesAsync();
+            }
+            
+        }
+
     }
 }

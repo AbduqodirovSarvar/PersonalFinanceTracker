@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class AuditLogRepository(DbContext context) : IAuditLogRepository
+    public class AuditLogRepository(AppDbContext context) : IAuditLogRepository
     {
-        protected readonly DbContext _context = context;
+        protected readonly AppDbContext _context = context;
         protected readonly DbSet<AuditLog> _dbSet = context.Set<AuditLog>();
 
         public async Task<AuditLog> CreateAsync(AuditLog entity)

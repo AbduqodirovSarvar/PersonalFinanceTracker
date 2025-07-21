@@ -1,15 +1,16 @@
 ﻿using Application.Interfaces;
 using Domain.Common;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
 {
-    public class GenericRepository<TEntity>(DbContext context, IRedisCacheService cacheService) : IGenericRepository<TEntity>
+    public class GenericRepository<TEntity>(AppDbContext context, IRedisCacheService cacheService) : IGenericRepository<TEntity>
         where TEntity : FullEntity
     {
-        protected readonly DbContext _context = context;
+        protected readonly AppDbContext _context = context;
         protected readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
         protected readonly IRedisCacheService _cacheService = cacheService;
 

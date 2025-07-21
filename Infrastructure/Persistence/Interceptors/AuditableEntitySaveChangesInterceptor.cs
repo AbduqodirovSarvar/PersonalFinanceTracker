@@ -18,14 +18,15 @@ namespace Infrastructure.Persistence.Interceptors
 ) : SaveChangesInterceptor
     {
         public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
-            DbContextEventData eventData,
-            InterceptionResult<int> result,
-            CancellationToken cancellationToken = default)
+    DbContextEventData eventData,
+    InterceptionResult<int> result,
+    CancellationToken cancellationToken = default)
         {
             var context = eventData.Context;
             if (context == null) return await base.SavingChangesAsync(eventData, result, cancellationToken);
 
             var userId = currentUserService.UserId;
+            var auditLogs = new List<AuditLog>();
 
             foreach (var entry in context.ChangeTracker.Entries<FullEntity>())
             {
@@ -35,7 +36,7 @@ namespace Infrastructure.Persistence.Interceptors
                     {
                         EntityName = entry.Metadata.GetTableName() ?? "Unknown",
                         Action = entry.State.ToString(),
-                        UserId = userId ?? Guid.Empty,
+                        UserId = userId ?? null,
                         CreatedAt = DateTime.UtcNow,
                         OldValue = entry.State == EntityState.Modified || entry.State == EntityState.Deleted
                             ? SerializeOriginalValues(entry)
@@ -46,9 +47,12 @@ namespace Infrastructure.Persistence.Interceptors
                         EntityId = entry.Entity.Id,
                     };
 
-                    context.Set<AuditLog>().Add(auditLog);
+                    auditLogs.Add(auditLog); // add to temp list instead of DbContext
                 }
             }
+
+            // Now add to context after enumeration is done
+            context.Set<AuditLog>().AddRange(auditLogs);
 
             return await base.SavingChangesAsync(eventData, result, cancellationToken);
         }

@@ -1,5 +1,8 @@
-﻿using Application.Models;
+﻿using Application.Interfaces;
+using Application.Models;
 using Application.Models.Common;
+using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,12 +13,17 @@ using System.Threading.Tasks;
 namespace Application.Features.Auth.Commands.SignIn
 {
     public class SignInCommandHandler(
-        
+        IAuthService authService,
+        IMapper mapper
         ) : IRequestHandler<SignInCommand, Result<UserViewModel>>
     {
-        public Task<Result<UserViewModel>> Handle(SignInCommand request, CancellationToken cancellationToken)
+        private readonly IAuthService _authService = authService;
+        private readonly IMapper _mapper = mapper;
+        public async Task<Result<UserViewModel>> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var (token, user) = await _authService.Authenticate(request.Login, request.Password);
+
+            return Result<UserViewModel>.LoginSuccess(_mapper.Map<UserViewModel>(user), token);
         }
     }
 }

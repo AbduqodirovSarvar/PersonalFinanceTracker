@@ -9,7 +9,7 @@ namespace Domain.Entities
 {
     public record AuditLog : AudiTableEntity
     {
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; } = null;
         public User? User { get; set; }
 
         public string Action { get; set; } = string.Empty;

@@ -8,6 +8,7 @@ using Infrastructure.Repositories;
 using Infrastructure.Persistence.Interceptors;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Application.Services;
 
 namespace Infrastructure.DependencyInjection
 {
@@ -27,6 +28,7 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+            services.AddScoped<IAuthService, AuthService>();
 
             services.AddDbContext<AppDbContext>((serviceProvider, options) =>
             {
@@ -39,7 +41,7 @@ namespace Infrastructure.DependencyInjection
 
 
             var redisConnection = configuration.GetConnectionString("Redis");
-            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnection!));
+            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnection!)); 
 
             return services;
         }
