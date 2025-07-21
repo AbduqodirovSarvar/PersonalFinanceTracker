@@ -22,5 +22,15 @@ namespace Application.Models.Common
                 PageSize = pageSize,
                 TotalItems = totalItems
             };
+
+        public new static PaginatedResult<TEntityViewModel> Fail(string message) => new()
+        {
+            Success = false,
+            Message = message,
+            Data = [],
+            PageIndex = 0,
+            PageSize = 0,
+            TotalItems = 0
+        };
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Domain.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -15,14 +16,14 @@ namespace Infrastructure.Identity
     {
         private readonly IConfiguration _configuration = configuration;
 
-        public string GenerateToken(Guid userId, string email, string role, string username)
+        public string GenerateToken(Guid userId, string email, Role role, string username)
         {
             var claims = new List<Claim>
             {
                 new("uid", userId.ToString()),
                 new(ClaimTypes.Email, email),
                 new(ClaimTypes.Name, username),
-                new(ClaimTypes.Role, role)
+                new(ClaimTypes.Role, role.ToString())
             };
 
             var key = new SymmetricSecurityKey(

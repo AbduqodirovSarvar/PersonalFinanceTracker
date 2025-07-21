@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Application.Interfaces
 {
     public interface ITokenService
     {
-        string GenerateToken(Guid userId, string email, string role, string userName);
+        string GenerateToken(Guid userId, string email, Role role, string userName);
     }
 }

@@ -10,31 +10,12 @@
     <Folder Include="Common\Behaviors\" />
     <Folder Include="Common\Exceptions\" />
     <Folder Include="DependencyInjection\" />
-    <Folder Include="Features\Categories\Commands\Create\" />
-    <Folder Include="Features\Categories\Commands\Delete\" />
-    <Folder Include="Features\Categories\Commands\Update\" />
-    <Folder Include="Features\Categories\Dtos\" />
-    <Folder Include="Features\Categories\Queries\GetList\" />
-    <Folder Include="Features\Categories\Queries\GetOne\" />
-    <Folder Include="Features\Categories\Validators\" />
-    <Folder Include="Features\Transactions\Commands\Create\" />
-    <Folder Include="Features\Transactions\Commands\Delete\" />
-    <Folder Include="Features\Transactions\Commands\Update\" />
-    <Folder Include="Features\Transactions\Dtos\" />
-    <Folder Include="Features\Transactions\Queries\GetList\" />
-    <Folder Include="Features\Transactions\Queries\GetOne\" />
     <Folder Include="Features\Transactions\Validators\" />
-    <Folder Include="Features\Users\Commands\Create\" />
-    <Folder Include="Features\Users\Commands\Delete\" />
-    <Folder Include="Features\Users\Commands\Update\" />
-    <Folder Include="Features\Users\Dtos\" />
-    <Folder Include="Features\Users\Queries\GetOne\" />
-    <Folder Include="Features\Users\Queries\GetList\" />
-    <Folder Include="Features\Users\Validators\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
+    <PackageReference Include="MediatR" Version="13.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.2" />
   </ItemGroup>
 
