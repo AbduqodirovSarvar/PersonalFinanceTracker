@@ -1,8 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
-using System;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
@@ -56,7 +54,7 @@ namespace Application.Services
 
         public async Task<User?> ChangePasswordAsync(Guid userId, string oldPassword, string newPassword)
         {
-            if(_currentUserService.UserId != userId && _currentUserService.Role != Role.Admin.ToString() && _currentUserService.Role != Role.SuperAdmin.ToString())
+            if (_currentUserService.UserId != userId && _currentUserService.Role != Role.Admin.ToString() && _currentUserService.Role != Role.SuperAdmin.ToString())
                 throw new Exception("You do not have permission to change this user's password.");
 
             var user = await _userRepository.GetAsync(u => u.Id == userId);
@@ -83,7 +81,7 @@ namespace Application.Services
 
         public async Task<User?> ResetPasswordAsync(Guid userId, string newPassword, string conformPassword, int confirmationCode = 12345)
         {
-            if(confirmationCode != 12345)
+            if (confirmationCode != 12345)
                 throw new Exception("Invalid confirmation code.");
 
             if (newPassword != conformPassword)

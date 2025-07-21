@@ -28,7 +28,8 @@ namespace WebApi.Extentions
                     var result = JsonSerializer.Serialize(new
                     {
                         status = report.Status.ToString(),
-                        checks = report.Entries.Select(e => new {
+                        checks = report.Entries.Select(e => new
+                        {
                             name = e.Key,
                             status = e.Value.Status.ToString(),
                             description = e.Value.Description

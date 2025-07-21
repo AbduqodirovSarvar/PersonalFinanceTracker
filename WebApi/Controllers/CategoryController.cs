@@ -1,12 +1,9 @@
-﻿using Application.Features.AuditLogs.Queries.GetList;
-using Application.Features.AuditLogs.Queries.GetOne;
-using Application.Features.Categories.Commands.Create;
+﻿using Application.Features.Categories.Commands.Create;
 using Application.Features.Categories.Commands.Delete;
 using Application.Features.Categories.Commands.Update;
 using Application.Features.Categories.Queries.GetList;
 using Application.Features.Categories.Queries.GetOne;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers

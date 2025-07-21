@@ -1,12 +1,7 @@
-﻿using Application.Models.Common;
-using Application.Models;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Models;
+using Application.Models.Common;
 using Application.Models.Queries;
+using MediatR;
 
 namespace Application.Features.Transactions.Queries.GetList
 {

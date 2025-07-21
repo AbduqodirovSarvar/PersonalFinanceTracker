@@ -1,12 +1,9 @@
-﻿using Application.Features.AuditLogs.Queries.GetList;
-using Application.Features.AuditLogs.Queries.GetOne;
-using Application.Features.Auth.Commands.ChangePassword;
+﻿using Application.Features.Auth.Commands.ChangePassword;
 using Application.Features.Auth.Commands.ChangeRole;
 using Application.Features.Auth.Commands.ResetPassword;
 using Application.Features.Auth.Commands.SignIn;
 using Application.Features.Auth.Commands.SignUp;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers

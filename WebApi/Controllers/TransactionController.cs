@@ -1,15 +1,9 @@
-﻿using Application.Features.Categories.Commands.Create;
-using Application.Features.Categories.Commands.Delete;
-using Application.Features.Categories.Commands.Update;
-using Application.Features.Categories.Queries.GetList;
-using Application.Features.Categories.Queries.GetOne;
-using Application.Features.Transactions.Commands.Create;
+﻿using Application.Features.Transactions.Commands.Create;
 using Application.Features.Transactions.Commands.Delete;
 using Application.Features.Transactions.Commands.Update;
 using Application.Features.Transactions.Queries.GetList;
 using Application.Features.Transactions.Queries.GetOne;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers

@@ -1,14 +1,9 @@
 ﻿using Application.Interfaces;
-using Application.Models.Common;
 using Application.Models;
+using Application.Models.Common;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Categories.Commands.Create
 {
@@ -27,7 +22,7 @@ namespace Application.Features.Categories.Commands.Create
         public async Task<Result<CategoryViewModel>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
             var currentUser = await _userRepository.GetAsync(u => u.Id == _currentUserService.UserId);
-            if(currentUser == null)
+            if (currentUser == null)
                 return Result<CategoryViewModel>.Fail("You are not authorized to create this category.");
 
             var category = await _categoryRepository.GetAsync(x => x.UserId == currentUser.Id && x.Name == request.Name);

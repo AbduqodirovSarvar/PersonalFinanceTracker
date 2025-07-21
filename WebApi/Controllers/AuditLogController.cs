@@ -1,7 +1,6 @@
 ﻿using Application.Features.AuditLogs.Queries.GetList;
 using Application.Features.AuditLogs.Queries.GetOne;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers

@@ -1,15 +1,9 @@
-﻿using Application.Features.Categories.Commands.Update;
-using Application.Interfaces;
-using Application.Models.Common;
+﻿using Application.Interfaces;
 using Application.Models;
+using Application.Models.Common;
 using AutoMapper;
 using Domain.Enums;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Categories.Queries.GetOne
 {

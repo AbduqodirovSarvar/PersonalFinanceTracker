@@ -1,17 +1,10 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
-using Infrastructure.Identity;
 using Infrastructure.Persistence.Configuration;
 using Infrastructure.Persistence.DefaultData;
 using Infrastructure.Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence
 {
@@ -48,14 +41,14 @@ namespace Infrastructure.Persistence
                 var users = DefaultUserData.Users(hashService);
                 foreach (var user in users)
                 {
-                    if(!Users.Any(x => x.UserName == user.UserName || x.Email == user.Email))
+                    if (!Users.Any(x => x.UserName == user.UserName || x.Email == user.Email))
                     {
                         Users.Add(user);
                     }
                 }
                 await SaveChangesAsync();
             }
-            
+
         }
 
     }

@@ -1,14 +1,14 @@
 ﻿using Application.Interfaces;
-using Infrastructure.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Infrastructure.Services;
-using Microsoft.Extensions.Configuration;
-using StackExchange.Redis;
-using Infrastructure.Repositories;
-using Infrastructure.Persistence.Interceptors;
-using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 using Application.Services;
+using Infrastructure.Identity;
+using Infrastructure.Persistence;
+using Infrastructure.Persistence.Interceptors;
+using Infrastructure.Repositories;
+using Infrastructure.Services.Redis;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace Infrastructure.DependencyInjection
 {
@@ -41,7 +41,7 @@ namespace Infrastructure.DependencyInjection
 
 
             var redisConnection = configuration.GetConnectionString("Redis");
-            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnection!)); 
+            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnection!));
 
             return services;
         }

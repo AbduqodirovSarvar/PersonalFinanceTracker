@@ -4,11 +4,6 @@ using Application.Models.Common;
 using AutoMapper;
 using Domain.Enums;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.AuditLogs.Queries.GetOne
 {
@@ -28,7 +23,7 @@ namespace Application.Features.AuditLogs.Queries.GetOne
                 return Result<AudiLogViewModel>.Fail("You are not authorized to see this log.");
 
             var auditLog = await _auditLogRepository.GetAsync(a => a.Id == request.Id);
-            if(auditLog is null)
+            if (auditLog is null)
                 return Result<AudiLogViewModel>.Fail("Audit log not found.");
 
             return Result<AudiLogViewModel>.Ok(_mapper.Map<AudiLogViewModel>(auditLog));

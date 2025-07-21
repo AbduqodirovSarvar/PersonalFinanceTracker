@@ -1,16 +1,10 @@
-﻿using Application.Features.Categories.Queries.GetOne;
-using Application.Interfaces;
-using Application.Models.Common;
+﻿using Application.Interfaces;
 using Application.Models;
+using Application.Models.Common;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Enums;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities;
 using System.Linq.Expressions;
 
 namespace Application.Features.Categories.Queries.GetList
