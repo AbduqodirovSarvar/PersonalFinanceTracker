@@ -1,6 +1,11 @@
 ﻿using Application.DependencyInjection;
+using Domain.Enums;
 using Infrastructure.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
+using System.Text;
 
 namespace WebApi.Extentions
 {
@@ -16,6 +21,44 @@ namespace WebApi.Extentions
             services.AddSwagger();
             services.AddHealthChecks();
 
+            services.AddAuthentication(o =>
+            {
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+           .AddJwtBearer(o =>
+           {
+               o.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ClockSkew = TimeSpan.FromDays(1),
+                   ValidateLifetime = true,
+                   ValidateAudience = true,
+                   ValidateIssuer = true,
+                   ValidateIssuerSigningKey = true,
+                   ValidIssuer = configuration["Jwt:Issuer"],
+                   ValidAudience = configuration["Jwt:Audience"],
+                   IssuerSigningKey = new SymmetricSecurityKey(
+                       Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
+               };
+               o.Events = new JwtBearerEvents
+               {
+                   OnAuthenticationFailed = context =>
+                   {
+                       Console.WriteLine(context.Exception);
+                       return Task.CompletedTask;
+                   }
+               };
+           });
+            services.AddAuthorizationBuilder()
+                .AddPolicy("SuperAdminActions", policy =>
+                {
+                    policy.RequireClaim(ClaimTypes.Role, Role.SuperAdmin.ToString());
+                })
+                .AddPolicy("AdminActions", policy =>
+                {
+                    policy.RequireClaim(ClaimTypes.Role, Role.Admin.ToString());
+                });
+
             services.AddCors(o => o.AddPolicy("AddCors", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -25,6 +68,8 @@ namespace WebApi.Extentions
             return services;
         }
 
+
+
         private static IServiceCollection AddSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
@@ -32,8 +77,8 @@ namespace WebApi.Extentions
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "PORTIFY.UZ website's Api",
-                    Description = "An ASP.NET Core Web API for PORTIFY.UZ website Api items"
+                    Title = "Personal Finance Tracker Api",
+                    Description = "An ASP.NET Core Web API for Personal FInance Tracker's Api items"
                 });
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()

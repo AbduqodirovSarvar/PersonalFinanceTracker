@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Enums;
 
-namespace Application.Features.AuditLogs.Queries.GetOne
+namespace Application.Features.AuditLogs.Queries.GetList
 {
     public class GetAuditLogListQueryHandler(
         IAuditLogRepository auditLogRepository,
@@ -26,15 +26,15 @@ namespace Application.Features.AuditLogs.Queries.GetOne
 
         public async Task<PaginatedResult<AudiLogViewModel>> Handle(GetAuditLogListQuery request, CancellationToken cancellationToken)
         {
-            if (_currentUserService.Role != Role.SuperAdmin.ToString() && _currentUserService.Role != Role.Admin.ToString())
+            if (_currentUserService.Role != Role.SuperAdmin.ToString() || _currentUserService.Role != Role.Admin.ToString())
                 return PaginatedResult<AudiLogViewModel>.Fail("You are not authorized to view audit logs.");
 
             Expression<Func<AuditLog, bool>> predicate = log =>
                 (string.IsNullOrWhiteSpace(request.SearchTerm) ||
-                (log.EntityName != null && log.EntityName.ToLower().Contains(request.SearchTerm.ToLower())) ||
-                (log.Action != null && log.Action.ToLower().Contains(request.SearchTerm.ToLower())) ||
-                (log.OldValue != null && log.OldValue.ToLower().Contains(request.SearchTerm.ToLower())) ||
-                (log.NewValue != null && log.NewValue.ToLower().Contains(request.SearchTerm.ToLower()))) &&
+                log.EntityName != null && log.EntityName.ToLower().Contains(request.SearchTerm.ToLower()) ||
+                log.Action != null && log.Action.ToLower().Contains(request.SearchTerm.ToLower()) ||
+                log.OldValue != null && log.OldValue.ToLower().Contains(request.SearchTerm.ToLower()) ||
+                log.NewValue != null && log.NewValue.ToLower().Contains(request.SearchTerm.ToLower())) &&
                 (!request.FromDate.HasValue || log.CreatedAt >= request.FromDate.Value) &&
                 (!request.ToDate.HasValue || log.CreatedAt <= request.ToDate.Value);
 

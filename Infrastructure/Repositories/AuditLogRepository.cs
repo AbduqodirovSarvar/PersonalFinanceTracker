@@ -35,13 +35,13 @@ namespace Infrastructure.Repositories
 
         public virtual async Task<AuditLog?> GetAsync(Expression<Func<AuditLog, bool>> predicate)
         {
-            return await _dbSet.AsNoTracking()
+            return await _dbSet.AsNoTracking().Include(x => x.User)
                                .FirstOrDefaultAsync(e => predicate.Compile()(e));
         }
 
         public virtual async Task<List<AuditLog>> GetAllAsync(Expression<Func<AuditLog, bool>>? predicate = null)
         {
-            IQueryable<AuditLog> query = _dbSet.AsNoTracking();
+            IQueryable<AuditLog> query = _dbSet.AsNoTracking().Include(x => x.User);
 
             if (predicate is not null)
                 query = query.Where(predicate);
@@ -65,7 +65,7 @@ namespace Infrastructure.Repositories
             if (orderBy is not null)
                 query = orderBy(query);
 
-            var data = await query.Skip(pageIndex * pageSize)
+            var data = await query.Include(x => x.User).Skip(pageIndex * pageSize)
                                   .Take(pageSize)
                                   .AsNoTracking()
                                   .ToListAsync();
@@ -80,7 +80,7 @@ namespace Infrastructure.Repositories
             if (predicate is not null)
                 query = query.Where(predicate);
 
-            return query.AsQueryable();
+            return query.AsQueryable().Include(x => x.User);
         }
     }
 }
