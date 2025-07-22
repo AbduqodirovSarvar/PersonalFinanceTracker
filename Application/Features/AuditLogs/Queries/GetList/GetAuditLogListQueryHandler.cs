@@ -21,7 +21,7 @@ namespace Application.Features.AuditLogs.Queries.GetList
 
         public async Task<PaginatedResult<AudiLogViewModel>> Handle(GetAuditLogListQuery request, CancellationToken cancellationToken)
         {
-            if (_currentUserService.Role != Role.SuperAdmin.ToString() || _currentUserService.Role != Role.Admin.ToString())
+            if (_currentUserService.Role != Role.SuperAdmin.ToString() && _currentUserService.Role != Role.Admin.ToString())
                 return PaginatedResult<AudiLogViewModel>.Fail("You are not authorized to view audit logs.");
 
             Expression<Func<AuditLog, bool>> predicate = log =>

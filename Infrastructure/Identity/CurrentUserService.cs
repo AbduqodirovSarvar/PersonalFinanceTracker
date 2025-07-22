@@ -1,19 +1,30 @@
 ﻿using Application.Interfaces;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Linq;
 using System.Security.Claims;
 
-namespace Infrastructure.Identity
+namespace Application.Services
 {
-    public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
+    public class CurrentUserService : ICurrentUserService
     {
-        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+        public Guid? UserId { get; }
+        public string? Email { get; }
+        public string? Username { get; }
+        public string? Role { get; }
 
-        public Guid? UserId => Guid.TryParse(_httpContextAccessor.HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == "uid")?.Value, out var id) ? id : null;
+        public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+        {
+            var userClaims = httpContextAccessor.HttpContext?.User?.Claims;
+            if (userClaims == null) return;
 
-        public string? Email => _httpContextAccessor.HttpContext?.User?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var idClaim = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            if (idClaim != null && Guid.TryParse(idClaim.Value, out var id))
+                UserId = id;
 
-        public string? Username => _httpContextAccessor.HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-
-        public string? Role => _httpContextAccessor.HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            Email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            Username = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            Role = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+        }
     }
 }

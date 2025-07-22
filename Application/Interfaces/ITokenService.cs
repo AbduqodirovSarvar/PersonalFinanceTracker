@@ -1,9 +1,10 @@
 ﻿using Domain.Enums;
+using System.Security.Claims;
 
 namespace Application.Interfaces
 {
     public interface ITokenService
     {
-        string GenerateToken(Guid userId, string email, Role role, string userName);
+        string GenerateToken(Claim[] claims);
     }
 }

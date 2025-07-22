@@ -12,29 +12,29 @@ namespace Infrastructure.Identity
     {
         private readonly IConfiguration _configuration = configuration;
 
-        public string GenerateToken(Guid userId, string email, Role role, string username)
+        public string GenerateToken(Claim[] claims)
         {
-            var claims = new List<Claim>
-            {
-                new("uid", userId.ToString()),
-                new(ClaimTypes.Email, email),
-                new(ClaimTypes.Name, username),
-                new(ClaimTypes.Role, role.ToString())
-            };
+            Claim[] jwtClaims =
+            [
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            ];
 
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var credentials = new SigningCredentials(
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)),
+                SecurityAlgorithms.HmacSha256
+            );
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
-                claims: claims,
+                claims: claims.Concat(jwtClaims),
                 expires: DateTime.UtcNow.AddHours(12),
-                signingCredentials: creds
+                signingCredentials: credentials
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            return tokenHandler.WriteToken(token);
         }
     }
 }

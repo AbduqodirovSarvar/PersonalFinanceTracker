@@ -1,6 +1,8 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
+using Microsoft.IdentityModel.JsonWebTokens;
+using System.Security.Claims;
 
 namespace Application.Services
 {
@@ -18,15 +20,19 @@ namespace Application.Services
 
         public async Task<(string Token, User User)> Authenticate(string login, string password)
         {
-            var user = await _userRepository.GetAsync(x => x.UserName == login || x.Email == login);
-
-            if (user is null)
-                throw new Exception("User not found.");
+            var user = await _userRepository.GetAsync(x => x.UserName == login || x.Email == login) ?? throw new Exception("User not found.");
 
             if (!_hashService.Verify(password, user.PasswordHash))
                 throw new Exception("Invalid password.");
 
-            var token = _tokenService.GenerateToken(user.Id, user.Email, user.Role, user.UserName);
+            Claim[] claims = [
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Role.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.UserName)
+            ];
+
+            var token = _tokenService.GenerateToken(claims);
 
             return (token, user);
         }

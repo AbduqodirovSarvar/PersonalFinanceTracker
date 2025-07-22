@@ -19,7 +19,7 @@ namespace Application.Features.AuditLogs.Queries.GetOne
 
         public async Task<Result<AudiLogViewModel>> Handle(GetAuditLogQuery request, CancellationToken cancellationToken)
         {
-            if (_currentUserService.Role != Role.SuperAdmin.ToString() || _currentUserService.Role != Role.Admin.ToString())
+            if (_currentUserService.Role != Role.SuperAdmin.ToString() && _currentUserService.Role != Role.Admin.ToString())
                 return Result<AudiLogViewModel>.Fail("You are not authorized to see this log.");
 
             var auditLog = await _auditLogRepository.GetAsync(a => a.Id == request.Id);
