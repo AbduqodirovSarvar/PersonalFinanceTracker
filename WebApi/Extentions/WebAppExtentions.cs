@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Infrastructure.MessageBroker.Producer;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,7 @@ namespace WebApi.Extentions
 
             await app.UpdateMigration();
             await app.Seed();
+            await app.CreateRabbitMqConnection();
         }
 
         private static async Task UpdateMigration(this WebApplication app)
@@ -62,6 +64,13 @@ namespace WebApi.Extentions
             var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             var hashservice = scope.ServiceProvider.GetRequiredService<IHashService>();
             await dbContext.SeedAsync(hashservice);
+        }
+
+        private static async Task CreateRabbitMqConnection(this WebApplication app)
+        {
+            var producer = app.Services.GetRequiredService<IMessageProducer>();
+            await ((RabbitMqProducer)producer).InitializeAsync();
+            await Task.CompletedTask;
         }
     }
 }

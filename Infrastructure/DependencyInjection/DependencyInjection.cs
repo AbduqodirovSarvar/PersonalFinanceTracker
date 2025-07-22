@@ -1,9 +1,11 @@
 ﻿using Application.Interfaces;
 using Application.Services;
 using Infrastructure.Identity;
+using Infrastructure.MessageBroker.Producer;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Infrastructure.Services.Redis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +21,7 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IHashService, HashService>();
-            services.AddScoped<IRedisCacheService, RedisCacheService>();
+            services.AddSingleton<IRedisCacheService, RedisCacheService>();
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserRepositoy, UserRepository>();
@@ -29,6 +31,8 @@ namespace Infrastructure.DependencyInjection
 
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IFileService, FileService>();
+            services.AddSingleton<IMessageProducer, RabbitMqProducer>();
 
             services.AddDbContext<AppDbContext>((serviceProvider, options) =>
             {

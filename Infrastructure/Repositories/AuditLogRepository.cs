@@ -31,7 +31,7 @@ namespace Infrastructure.Repositories
         public virtual async Task<AuditLog?> GetAsync(Expression<Func<AuditLog, bool>> predicate)
         {
             return await _dbSet.AsNoTracking().Include(x => x.User)
-                               .FirstOrDefaultAsync(e => predicate.Compile()(e));
+                               .FirstOrDefaultAsync(predicate);
         }
 
         public virtual async Task<List<AuditLog>> GetAllAsync(Expression<Func<AuditLog, bool>>? predicate = null)

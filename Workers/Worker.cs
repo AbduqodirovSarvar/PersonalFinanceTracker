@@ -1,16 +1,18 @@
+using Workers.Interfaces;
+
 namespace Workers
 {
-    public class Worker : BackgroundService
+    public class Worker(ILogger<Worker> logger, IRabbitMqConsumer rabbitMqConsumer) : BackgroundService
     {
-        private readonly ILogger<Worker> _logger;
-
-        public Worker(ILogger<Worker> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<Worker> _logger = logger;
+        private readonly IRabbitMqConsumer _rabbitMqConsumer = rabbitMqConsumer;
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            _logger.LogInformation("🔄 RabbitMQ consumer starting...");
+
+            await _rabbitMqConsumer.StartConsumingAsync();
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 if (_logger.IsEnabled(LogLevel.Information))
