@@ -20,7 +20,8 @@ namespace Infrastructure.MessageBroker.Producer
                 HostName = _config.Host,
                 Port = _config.Port,
                 UserName = _config.Username,
-                Password = _config.Password
+                Password = _config.Password,
+                //Uri = new Uri(_config.Uri)
             };
 
             const int maxRetries = 5;
@@ -38,6 +39,8 @@ namespace Infrastructure.MessageBroker.Producer
                                                      exclusive: false,
                                                      autoDelete: false,
                                                      arguments: null);
+
+                    Console.WriteLine($"RabbitMQ ulanish muvaffaqiyatli.");
                     return;
                 }
                 catch (Exception ex)

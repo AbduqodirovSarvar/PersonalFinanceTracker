@@ -26,7 +26,8 @@ namespace Workers.MessageBroker
                 HostName = _config.Host,
                 Port = _config.Port,
                 UserName = _config.Username,
-                Password = _config.Password
+                Password = _config.Password,
+                //Uri = new Uri(_config.Uri)
             };
 
             var connection = await factory.CreateConnectionAsync();

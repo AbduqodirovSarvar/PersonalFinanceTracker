@@ -13,5 +13,7 @@ namespace Workers.Models
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string QueueName { get; set; } = string.Empty;
+
+        public string Uri {  get; set; } = string.Empty;
     }
 }

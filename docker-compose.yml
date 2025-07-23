@@ -11,7 +11,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=PFT;Username=postgres;Password=postgres
       - ConnectionStrings__Redis=redis:6379
-      - ConnectionStrings__RabbitMq=amqp://guest:guest@rabbitmq:5672/
+      - ConnectionStrings__RabbitMq=amqp://guest:guest@localhost:5672/
       - Jwt__Key=6w7XZfbM9nFjPZguLkV9aTq9R5v8Y2tHZ4sBrmEJc5o=
       - Jwt__Issuer=personal-finance-tracker-issuer
       - Jwt__Audience=personal-finance-tracker-audience
@@ -20,6 +20,7 @@ services:
       - RabbitMq__Username=guest
       - RabbitMq__Password=guest
       - RabbitMq__QueueName=export-statistics
+      - RabbitMq__Uri=amqp://guest:guest@localhost:5672/
     depends_on:
       - postgres
       - redis
@@ -32,6 +33,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__RabbitMq=amqp://guest:guest@rabbitmq:5672/
+      - RabbitMq__Host=rabbitmq
+      - RabbitMq__Port=5672
+      - RabbitMq__Username=guest
+      - RabbitMq__Password=guest
+      - RabbitMq__QueueName=export-statistics
+      - RabbitMq__Uri=amqp://guest:guest@localhost:5672/
     depends_on:
       - postgres
       - redis
@@ -58,6 +65,7 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     restart: always
+    container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"

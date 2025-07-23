@@ -2,6 +2,7 @@
 using Application.Services;
 using Infrastructure.Identity;
 using Infrastructure.MessageBroker.Producer;
+using Infrastructure.MessageBroker.Settings.RabbitMqConfigs;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using Infrastructure.Repositories;
@@ -30,7 +31,7 @@ namespace Infrastructure.DependencyInjection
             services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAuthService, AuthService>();    
             services.AddScoped<IFileService, FileService>();
             services.AddSingleton<IMessageProducer, RabbitMqProducer>();
 

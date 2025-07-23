@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HealthController : ControllerBase
+    public class HealthController(IMessageProducer messageProducer) : ControllerBase
     {
+        private readonly IMessageProducer _producer = messageProducer;
         /// <summary>
         /// Gets the health status of the application.
         /// </summary>
@@ -33,6 +35,13 @@ namespace WebApi.Controllers
                 name = identity?.Name,
                 claims = HttpContext.User.Claims.Select(x => new { x.Type, x.Value })
             });
+        }
+
+        [HttpPost("check/rabbitmq")]
+        public async Task<IActionResult> Post([FromBody] object payload)
+        {
+            await _producer.SendMessage(payload);
+            return Ok("Message sent to RabbitMQ");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Application.DependencyInjection;
 using Domain.Enums;
 using Infrastructure.DependencyInjection;
+using Infrastructure.MessageBroker.Settings.RabbitMqConfigs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -17,6 +18,9 @@ namespace WebApi.Extentions
         {
             services.AddControllers();
             services.AddHttpContextAccessor();
+
+            services.Configure<RabbitMqConfig>(configuration.GetSection("RabbitMq"));
+
             services.AddApplication();
             services.AddInfrastructure(configuration);
             services.AddEndpointsApiExplorer();

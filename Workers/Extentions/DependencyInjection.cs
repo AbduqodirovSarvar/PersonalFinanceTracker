@@ -15,7 +15,12 @@ namespace Workers.Extentions
         public static IServiceCollection AddWorkers(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<RabbitMqConfig>(configuration.GetSection("RabbitMq"));
-            
+
+            services.Configure<RabbitMqConfig>(opt =>
+            {
+                opt.Uri = configuration.GetConnectionString("RabbitMq")!;
+            });
+
             services.AddScoped<IRabbitMqConsumer, RabbitMqConsumer>();
             services.AddScoped<IExcelService, ExcelService>();
 
